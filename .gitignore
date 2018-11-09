@@ -36,3 +36,6 @@ build/
 *.pid
 *.log
 *.tmp
+
+# pi-motion-detection
+captures/

@@ -1,8 +1,7 @@
 const os = require('os'),
     ip = require('ip'),
     moment = require('moment-timezone'),
-    express = require('express'),
-    request = require('request');
+    express = require('express');
 
 const path = require('path');
 const MotionDetectionModule = require('pi-motion-detection');
@@ -13,7 +12,7 @@ const motionDetector = new MotionDetectionModule({
 
 const app = express();
 app.set('view engine', 'ejs');
-app.use('/favicon.ico', express.static('views/favicon.ico'));
+app.use('/favicon.ico', express.static('views/favicon.ico'), express.static('captures'));
 
 app.get('/', function (req, res) {
     let host = os.hostname();

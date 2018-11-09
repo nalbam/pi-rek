@@ -3,27 +3,19 @@
 <head>
     <meta charset="utf-8">
     <title>rpi-rek</title>
-    <script src="http://cdn.binaryjs.com/0/binary.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
     <script>
-        var host = location.hostname;
-        var img = document.querySelector('.img');
-        var client = new BinaryClient('ws://' + host + ':9001');
-        client.on('open', function() {
-          console.log('client connected');
-          client.send('foo');
+        var socket = io();
+        socket.on('liveStream', function(url) {
+            $('#image').attr('src', url);
+            // $('.start').hide();
         });
-        client.on('stream', function(stream, meta){
-          //console.log('Received stream');
-          var parts = [];
-          stream.on('data', function(data){
-            parts.push(data);
-          });
-          stream.on('end', function(){
-            img.src = (window.URL || window.webkitURL).createObjectURL(new Blob(parts));
-            client.send('foo');
-          });
-        });
-      </script>
+
+        function startStream() {
+            socket.emit('start-stream');
+            // $('.start').hide();
+        }
+    </script>
 </head>
 <body>
 
@@ -33,6 +25,10 @@
 <p><%= date %></p>
 <p><img id="image" src="/images/image.jpg" width="200"></p>
 <p id="qr"></p>
+
+<script>
+    startStream();
+</script>
 
 </body>
 </html>

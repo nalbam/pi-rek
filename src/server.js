@@ -4,23 +4,18 @@ const os = require('os'),
     moment = require('moment-timezone'),
     express = require('express');
 
-var BinaryServer = require('binaryjs').BinaryServer;
-
 const exec = require('child_process').exec;
 const CronJob = require('cron').CronJob;
 
 const scan_shell = process.env.SCAN_SHELL || '';
 
-const path = require('path');
-const MotionDetectionModule = require('pi-motion-detection');
-
-const motionDetector = new MotionDetectionModule({
-    captureDirectory: path.resolve(__dirname, 'captures'),
-    continueAfterMotion: true,
-    captureVideoOnMotion: false,
-});
-
 const app = express();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+
+var sockets = {};
+
+// express
 app.set('view engine', 'ejs');
 app.use(express.static('static'));
 app.use(express.static('captures'));
@@ -35,15 +30,39 @@ app.listen(3000, function () {
     console.log('Listening on port 3000!');
 });
 
-motionDetector.on('motion', () => {
-    console.log('motion!');
+io.on('connection', function(socket) {
+    sockets[socket.id] = socket;
+    console.log('Total clients connected : ', Object.keys(sockets).length);
+
+    socket.on('disconnect', function() {
+        delete sockets[socket.id];
+
+        // no more sockets, kill the stream
+        if (Object.keys(sockets).length == 0) {
+            app.set('watchingFile', false);
+            fs.unwatchFile('./captures/images/image.jpg');
+        }
+    });
+
+    socket.on('start-stream', function() {
+        startStreaming(io);
+    });
 });
 
-motionDetector.on('error', (error) => {
-    console.log(error);
-});
+function startStreaming(io) {
+    if (app.get('watchingFile')) {
+        io.sockets.emit('liveStream', '/images/image.jpg?_t=' + (Math.random() * 100000));
+        return;
+    }
 
-motionDetector.watch();
+    console.log('Watching for changes...');
+
+    app.set('watchingFile', true);
+
+    fs.watchFile('./captures/images/image.jpg', function() {
+        io.sockets.emit('liveStream', '/images/image.jpg?_t=' + (Math.random() * 100000));
+    });
+}
 
 const job = new CronJob({
     cronTime: '*/3 * * * * *',
@@ -67,18 +86,3 @@ const job = new CronJob({
 if (scan_shell) {
     job.start();
 }
-
-var server = BinaryServer({port: 9001});
-
-server.on('connection', function(client){
-    console.log('BinaryJS connected');
-    client.on('stream', function() {
-        console.log('sending stream');
-        var file = fs.createReadStream(path.resolve(__dirname, 'captures/images/image.jpg'));
-        client.send(file);
-    });
-});
-
-process.on('exit', function() {
-    console.error('Fatal error. Exiting.');
-});

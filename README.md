@@ -3,7 +3,7 @@
 ## npm install
 
 ```bash
-npm install cron ejs express ip moment-timezone pi-camera request
+npm install cron ejs express ip moment-timezone request
 ```
 
 ## start

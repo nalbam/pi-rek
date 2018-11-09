@@ -67,7 +67,7 @@ function startStreaming(io) {
     fs.watchFile('./static/qr.json', function() {
         fs.readFile('./static/qr.json', function(data, err) {
             if (err) {
-                io.sockets.emit('QR', 'error');
+                io.sockets.emit('QR', 'error ' + (Math.random() * 100000));
                 return;
             }
             io.sockets.emit('QR', data);

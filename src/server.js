@@ -1,7 +1,10 @@
 const os = require('os'),
     ip = require('ip'),
+    fs = require('fs'),
     moment = require('moment-timezone'),
     express = require('express');
+
+var BinaryServer = require('binaryjs').BinaryServer;
 
 const exec = require('child_process').exec;
 const CronJob = require('cron').CronJob;
@@ -64,3 +67,18 @@ const job = new CronJob({
 if (scan_shell) {
     job.start();
 }
+
+var server = BinaryServer({port: 9001});
+
+server.on('connection', function(client){
+    console.log('BinaryJS connected');
+    client.on('stream', function() {
+        console.log('sending stream');
+        var file = fs.createReadStream(path.resolve(__dirname, 'captures/images/image.jpg'));
+        client.send(file);
+    });
+});
+
+process.on('exit', function() {
+    console.error('Fatal error. Exiting.');
+});

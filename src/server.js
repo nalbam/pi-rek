@@ -12,7 +12,8 @@ const motionDetector = new MotionDetectionModule({
 
 const app = express();
 app.set('view engine', 'ejs');
-app.use('/favicon.ico', express.static('views/favicon.ico'), express.static('captures'));
+app.use('/favicon.ico', express.static('views/favicon.ico'));
+app.use(express.static('captures'));
 
 app.get('/', function (req, res) {
     let host = os.hostname();

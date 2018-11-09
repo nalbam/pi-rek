@@ -10,8 +10,10 @@
         socket.on('liveStream', function(url) {
             $('#image').attr('src', url);
         });
-        socket.on('QR', function(data) {
-            $('#qr').text(data);
+        socket.on('QR', function(url) {
+            $.getJSON(url, function(data) {
+                $('#qr').text(data);
+            });
         });
         function startStream() {
             socket.emit('start-stream');

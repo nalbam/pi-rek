@@ -12,7 +12,11 @@
         });
         socket.on('QR', function(url) {
             $.getJSON(url, function(data) {
-                $('#qr').text(data.id);
+                if (data.id) {
+                    $('#qr').text(data.id);
+                } else {
+                    $('#qr').text('');
+                }
             });
         });
         function startStream() {

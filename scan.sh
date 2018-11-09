@@ -1,10 +1,11 @@
 #!/bin/bash
 
-SHELL_DIR=$(dirname $0)
+SRC_DIR=~/rpi-rek/src
 
-CONFIG=~/.rpi-rek
-touch ${CONFIG}
-. ${CONFIG}
+IMAGE=${SRC_DIR}/captures/images/image.jpg
 
 # raspi still
-raspistill -w 960 -h 720 -t 1000 -th none -x none -o ~/rpi-rek/src/captures/images/image.jpg
+raspistill -w 960 -h 720 -t 900 -th none -x none -o ${IMAGE}
+
+# zbar img
+zbarimg ${IMAGE} 2>&1 | grep 'QR-Code' > ${SRC_DIR}/static/qr.json

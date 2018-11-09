@@ -14,7 +14,7 @@ PREV=$(cat ${SRC_DIR}/static/qr.json)
 
 QR=$(zbarimg ${IMAGE} 2>&1 | grep 'QR-Code')
 if [ ! -z ${QR} ]; then
-    DETC="${QR:7}"
+    DETC="${QR:8}"
 fi
 
 if [ "${PREV}" != "${DETC}" ]; then

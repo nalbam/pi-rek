@@ -4,7 +4,7 @@ SHELL_DIR=$(dirname $0)
 
 CMD=${1:-init}
 
-CONFIG=~/.rpi-scan
+CONFIG=~/.rpi-rek
 touch ${CONFIG}
 . ${CONFIG}
 
@@ -61,7 +61,7 @@ _start() {
 
     PID=$(ps -ef | grep node | grep server[.]js | head -1 | awk '{print $2}' | xargs)
     if [ "{PID}" != "" ]; then
-        _result "rpi-scan started: ${PID}"
+        _result "rpi-rek started: ${PID}"
     fi
 }
 
@@ -87,15 +87,11 @@ _config_read() {
         fi
     fi
 
-    export LAMBDA_KEY="${LAMBDA_KEY}"
-    export LAMBDA_API="${LAMBDA_API}"
     export SCAN_SHELL="${SCAN_SHELL}"
 }
 
 _config_save() {
-    echo "# rpi-scan config" > ${CONFIG}
-    echo "export LAMBDA_KEY=${LAMBDA_KEY}" >> ${CONFIG}
-    echo "export LAMBDA_API=${LAMBDA_API}" >> ${CONFIG}
+    echo "# rpi-rek config" > ${CONFIG}
     echo "export SCAN_SHELL=${SCAN_SHELL}" >> ${CONFIG}
 
     cat ${CONFIG}

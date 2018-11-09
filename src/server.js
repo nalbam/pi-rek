@@ -3,6 +3,11 @@ const os = require('os'),
     moment = require('moment-timezone'),
     express = require('express');
 
+const exec = require('child_process').exec;
+const CronJob = require('cron').CronJob;
+
+const scan_shell = process.env.SCAN_SHELL || '';
+
 const path = require('path');
 const MotionDetectionModule = require('pi-motion-detection');
 
@@ -36,3 +41,26 @@ motionDetector.on('error', (error) => {
 });
 
 motionDetector.watch();
+
+const job = new CronJob({
+    cronTime: '*/3 * * * * *',
+    onTick: function() {
+        let date = moment().tz('Asia/Seoul').format();
+        console.log(`scan start. ${date}`);
+
+        const scan = exec(`${scan_shell}`);
+        scan.stdout.on('data', data => {
+            console.log(`data: ${data}`);
+        });
+
+        scan.stderr.on('data', data => {
+            console.error(`Error: ${data}`);
+        });
+    },
+    start: false,
+    timeZone: 'Asia/Seoul'
+});
+
+if (scan_shell) {
+    job.start();
+}

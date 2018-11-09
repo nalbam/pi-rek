@@ -53,7 +53,7 @@ http.listen(3000, function () {
 function startStreaming(io) {
     if (app.get('watchingFile')) {
         io.sockets.emit('liveStream', '/images/image.jpg?_t=' + (Math.random() * 100000));
-        io.sockets.emit('QR', '');
+        io.sockets.emit('QR', 'start');
         return;
     }
 
@@ -67,7 +67,8 @@ function startStreaming(io) {
     fs.watchFile('./static/qr.json', function() {
         fs.readFile('./static/qr.json', function(data, err) {
             if (err) {
-                io.sockets.emit('QR', '');
+                io.sockets.emit('QR', 'error');
+                return;
             }
             io.sockets.emit('QR', data);
         });

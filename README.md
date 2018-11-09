@@ -3,13 +3,13 @@
 ## npm install
 
 ```bash
-npm install cron ejs express ip moment-timezone request
+npm install cron ejs express ip moment-timezone request socket.io
 ```
 
 ## start
 
 ```bash
-export HOST=api.nalbam.com
+export SCAN_SHELL=/home/pi/rpi-rek/scan.sh
 
 ./run.sh
 ```

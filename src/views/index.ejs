@@ -3,17 +3,15 @@
 <head>
     <meta charset="utf-8">
     <title>rpi-rek</title>
+    <script src="http://code.jquery.com/jquery.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
         var socket = io();
         socket.on('liveStream', function(url) {
             $('#image').attr('src', url);
-            // $('.start').hide();
         });
-
         function startStream() {
             socket.emit('start-stream');
-            // $('.start').hide();
         }
     </script>
 </head>

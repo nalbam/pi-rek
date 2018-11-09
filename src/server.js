@@ -26,10 +26,6 @@ app.get('/', function (req, res) {
     res.render('index.ejs', {host: host, date: date, server: ip.address(), client: req.ip.split(':').pop()});
 });
 
-app.listen(3000, function () {
-    console.log('Listening on port 3000!');
-});
-
 io.on('connection', function(socket) {
     sockets[socket.id] = socket;
     console.log('Total clients connected : ', Object.keys(sockets).length);
@@ -37,7 +33,7 @@ io.on('connection', function(socket) {
     socket.on('disconnect', function() {
         delete sockets[socket.id];
 
-        // no more sockets, kill the stream
+        // no more sockets
         if (Object.keys(sockets).length == 0) {
             app.set('watchingFile', false);
             fs.unwatchFile('./captures/images/image.jpg');
@@ -47,6 +43,10 @@ io.on('connection', function(socket) {
     socket.on('start-stream', function() {
         startStreaming(io);
     });
+});
+
+http.listen(3000, function () {
+    console.log('Listening on port 3000!');
 });
 
 function startStreaming(io) {

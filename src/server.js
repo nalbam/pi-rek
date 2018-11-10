@@ -21,7 +21,7 @@ app.use(express.static('static'));
 
 app.get('/', function (req, res) {
     let host = os.hostname();
-    res.render('index.ejs', {host: host, server: ip.address()});
+    res.render('index.ejs', {host: host, port: port, server: ip.address()});
 });
 
 io.on('connection', function(socket) {

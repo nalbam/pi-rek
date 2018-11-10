@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>rpi-rek</title>
-    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
         var socket = io();
@@ -27,10 +27,9 @@
 <body>
 
 <h3><%= host %></h3>
-<h1><a href="http://<%= server %>:3000"><%= server %></a></h1>
-<p><%= client %></p>
+<h2><a href="http://<%= server %>:3000"><%= server %></a></h2>
 
-<p><img id="image" src="image.jpg" width="200" height="150"></p>
+<p><img id="image" src="image.png" width="200" height="150"></p>
 <p id="qr"></p>
 
 <script>

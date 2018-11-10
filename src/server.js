@@ -1,17 +1,16 @@
 const os = require('os'),
     ip = require('ip'),
     fs = require('fs'),
-    moment = require('moment-timezone'),
     express = require('express');
 
 const exec = require('child_process').exec;
-const CronJob = require('cron').CronJob;
+const cron = require('cron').CronJob;
 
 const scan_shell = process.env.SCAN_SHELL || '';
 
 const app = express();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
 
 var sockets = {};
 
@@ -21,13 +20,12 @@ app.use(express.static('static'));
 
 app.get('/', function (req, res) {
     let host = os.hostname();
-    let date = moment().tz('Asia/Seoul').format();
-    res.render('index.ejs', {host: host, date: date, server: ip.address(), client: req.ip.split(':').pop()});
+    res.render('index.ejs', {host: host, server: ip.address()});
 });
 
 io.on('connection', function(socket) {
     sockets[socket.id] = socket;
-    console.log('Total clients connected : ', Object.keys(sockets).length);
+    console.log('Clients connected : ', Object.keys(sockets).length);
 
     socket.on('disconnect', function() {
         delete sockets[socket.id];
@@ -65,30 +63,25 @@ function startStreaming(io) {
     });
     fs.watchFile('./static/qr.json', function() {
         io.sockets.emit('QR', 'qr.json?_t=' + (Math.random() * 100000));
-        // fs.readFile('./static/qr.json', function(data, err) {
-        //     if (err) {
-        //         io.sockets.emit('QR', 'error ' + (Math.random() * 100000));
-        //         return;
-        //     }
-        //     io.sockets.emit('QR', data);
-        // });
     });
 }
 
-const job = new CronJob({
+function scanJob() {
+    const scan = exec(`${scan_shell}`);
+
+    scan.stdout.on('data', data => {
+        console.log(`scanned.`);
+    });
+
+    scan.stderr.on('data', data => {
+        console.error(`failure.`);
+    });
+}
+
+const job = new cron({
     cronTime: '*/3 * * * * *',
     onTick: function() {
-        let date = moment().tz('Asia/Seoul').format();
-        console.log(`scan start. ${date}`);
-
-        const scan = exec(`${scan_shell}`);
-        scan.stdout.on('data', data => {
-            console.log(`data: ${data}`);
-        });
-
-        scan.stderr.on('data', data => {
-            console.error(`Error: ${data}`);
-        });
+        scanJob();
     },
     start: false,
     timeZone: 'Asia/Seoul'

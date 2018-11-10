@@ -25,10 +25,11 @@ app.get('/', function (req, res) {
 });
 
 io.on('connection', function(socket) {
+    console.log('connection : ', socket.id);
     sockets[socket.id] = socket;
-    console.log('Clients connected : ', Object.keys(sockets).length);
 
     socket.on('disconnect', function() {
+        console.log('disconnect : ', socket.id);
         delete sockets[socket.id];
 
         // no more sockets
@@ -40,6 +41,7 @@ io.on('connection', function(socket) {
     });
 
     socket.on('start-stream', function() {
+        console.log('start-stream : ', socket.id);
         startStreaming(io);
     });
 });

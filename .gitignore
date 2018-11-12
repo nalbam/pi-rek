@@ -39,3 +39,4 @@ build/
 
 # pi-motion-detection
 captures/
+encodings.pickle

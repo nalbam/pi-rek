@@ -66,20 +66,6 @@ _start() {
 }
 
 _config_read() {
-    if [ -z ${LAMBDA_KEY} ]; then
-        _read "LAMBDA_KEY [${LAMBDA_KEY}]: " "${LAMBDA_KEY}"
-        if [ ! -z ${ANSWER} ]; then
-            LAMBDA_KEY="${ANSWER}"
-        fi
-    fi
-
-    if [ -z ${LAMBDA_API} ]; then
-        _read "LAMBDA_API [${LAMBDA_API}]: " "${LAMBDA_API}"
-        if [ ! -z ${ANSWER} ]; then
-            LAMBDA_API="${ANSWER}"
-        fi
-    fi
-
     if [ -z ${SCAN_SHELL} ]; then
         _read "SCAN_SHELL [${SCAN_SHELL}]: " "${SCAN_SHELL}"
         if [ ! -z ${ANSWER} ]; then

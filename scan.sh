@@ -1,16 +1,16 @@
 #!/bin/bash
 
-SRC_DIR=~/rpi-rek/src
+SHELL_DIR=$(dirname $0)
 
-IMAGE=${SRC_DIR}/static/image.jpg
+IMAGE=${SHELL_DIR}/static/image.jpg
 
 # raspi still
 raspistill -w 800 -h 600 -t 900 -th none -x none -o ${IMAGE}
 
 # qr
-# zbarimg ${IMAGE} 2>&1 | grep 'QR-Code' > ${SRC_DIR}/static/qr.json
+# zbarimg ${IMAGE} 2>&1 | grep 'QR-Code' > ${SHELL_DIR}/static/qr.json
 
-PREV=$(cat ${SRC_DIR}/static/qr.json)
+PREV=$(cat ${SHELL_DIR}/static/qr.json)
 if [ -z ${PREV} ]; then
     PREV="{}"
 fi
@@ -23,5 +23,5 @@ else
 fi
 
 if [ "${PREV}" != "${DETC}" ]; then
-    echo "${DETC}" > ${SRC_DIR}/static/qr.json
+    echo "${DETC}" > ${SHELL_DIR}/static/qr.json
 fi

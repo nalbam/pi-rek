@@ -19,6 +19,10 @@ node_modules/
 package-lock.json
 nohup.out
 
+# python
+__pycache__
+.pytest_cache
+
 # Maven
 target/
 build/

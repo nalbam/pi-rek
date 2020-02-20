@@ -9,11 +9,6 @@ sudo pip3 install imutils
 sudo pip3 install opencv-python
 sudo pip3 install opencv-python-headless
 
-sudo apt install -y libatlas-base-dev
-sudo apt install -y libjasper-dev
-sudo apt install -y libqtgui4
-sudo apt install -y python3-pyqt5
-sudo apt install -y libhdf5-dev
-sudo apt install -y libqt4-test
+sudo apt install -y libhdf5-dev libatlas-base-dev libjasper-dev libqtgui4 libqt4-test
 
 # https://github.com/amymcgovern/pyparrot/issues/34

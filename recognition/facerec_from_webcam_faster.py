@@ -34,11 +34,11 @@ known_face_names = [
     # "Moon",
 ]
 
-for file in glob.glob("./dataset/*.jpg"):
+for file in glob.glob("./faces/*.jpg"):
     image = face_recognition.load_image_file(file)
     encoded = face_recognition.face_encodings(image)[0]
 
-    m = re.search("./dataset/(.+?).jpg", file)
+    m = re.search("./faces/(.+?).jpg", file)
     if m:
         known_face_names.append(m.group(1))
     else:

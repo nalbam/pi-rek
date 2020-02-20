@@ -21,14 +21,14 @@ app.use(express.static('static'));
 
 app.get('/', function (req, res) {
     let host = os.hostname();
-    res.render('index.ejs', {host: host, port: port, server: ip.address()});
+    res.render('index.ejs', { host: host, port: port, server: ip.address() });
 });
 
-io.on('connection', function(socket) {
+io.on('connection', function (socket) {
     console.log('connection : ', socket.id);
     sockets[socket.id] = socket;
 
-    socket.on('disconnect', function() {
+    socket.on('disconnect', function () {
         console.log('disconnect : ', socket.id);
         delete sockets[socket.id];
 
@@ -40,7 +40,7 @@ io.on('connection', function(socket) {
         }
     });
 
-    socket.on('start-stream', function() {
+    socket.on('start-stream', function () {
         console.log('start-stream : ', socket.id);
         startStreaming(io);
     });
@@ -61,10 +61,10 @@ function startStreaming(io) {
 
     app.set('watchingFile', true);
 
-    fs.watchFile('./static/image.jpg', function() {
+    fs.watchFile('./static/image.jpg', function () {
         io.sockets.emit('liveStream', 'image.jpg?_t=' + (Math.random() * 100000));
     });
-    fs.watchFile('./static/qr.json', function() {
+    fs.watchFile('./static/qr.json', function () {
         io.sockets.emit('QR', 'qr.json?_t=' + (Math.random() * 100000));
     });
 }
@@ -83,7 +83,7 @@ function scanJob() {
 
 const job = new cron({
     cronTime: '*/3 * * * * *',
-    onTick: function() {
+    onTick: function () {
         scanJob();
     },
     start: false,

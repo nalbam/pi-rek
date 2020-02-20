@@ -14,7 +14,7 @@ import re
 # specific demo. If you have trouble installing it, try any of the other demos that don't require it instead.
 
 # Get a reference to webcam #0 (the default one)
-video_capture = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(0)
 
 # # Load a sample picture and learn how to recognize it.
 # nalbam_image = face_recognition.load_image_file("dataset/nalbam.jpg")
@@ -54,7 +54,7 @@ process_this_frame = True
 
 while True:
     # Grab a single frame of video
-    ret, frame = video_capture.read()
+    ret, frame = cap.read()
 
     # Resize frame of video to 1/4 size for faster face recognition processing
     small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
@@ -124,5 +124,5 @@ while True:
         break
 
 # Release handle to the webcam
-video_capture.release()
+cap.release()
 cv2.destroyAllWindows()

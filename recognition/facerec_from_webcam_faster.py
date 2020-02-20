@@ -1,6 +1,8 @@
 import cv2
 import face_recognition
+import glob
 import numpy as np
+import re
 
 # This is a demo of running face recognition on live video from your webcam. It's a little more complicated than the
 # other example, but it includes some basic performance tweaks to make things run a lot faster:
@@ -14,20 +16,35 @@ import numpy as np
 # Get a reference to webcam #0 (the default one)
 video_capture = cv2.VideoCapture(0)
 
-# Load a sample picture and learn how to recognize it.
-nalbam_image = face_recognition.load_image_file("dataset/nalbam/2018.jpg")
-nalbam_face_encoding = face_recognition.face_encodings(nalbam_image)[0]
+# # Load a sample picture and learn how to recognize it.
+# nalbam_image = face_recognition.load_image_file("dataset/nalbam.jpg")
+# nalbam_face_encoding = face_recognition.face_encodings(nalbam_image)[0]
 
-# Load a sample picture and learn how to recognize it.
-moon_image = face_recognition.load_image_file("dataset/moon.jpg")
-moon_face_encoding = face_recognition.face_encodings(moon_image)[0]
+# # Load a sample picture and learn how to recognize it.
+# moon_image = face_recognition.load_image_file("dataset/moon.jpg")
+# moon_face_encoding = face_recognition.face_encodings(moon_image)[0]
 
 # Create arrays of known face encodings and their names
 known_face_encodings = [
-    nalbam_face_encoding,
-    moon_face_encoding,
+    # nalbam_face_encoding,
+    # moon_face_encoding,
 ]
-known_face_names = ["Jungyoul Yu", "Jaein Moon"]
+known_face_names = [
+    # "Jungyoul",
+    # "Moon",
+]
+
+for file in glob.glob("./dataset/*.jpg"):
+    image = face_recognition.load_image_file(file)
+    encoded = face_recognition.face_encodings(image)[0]
+
+    m = re.search("./dataset/(.+?).jpg", file)
+    if m:
+        known_face_names.append(m.group(1))
+    else:
+        known_face_names.append(file)
+
+    known_face_encodings.append(encoded)
 
 # Initialize some variables
 face_locations = []

@@ -11,11 +11,11 @@ import re
 # specific demo. If you have trouble installing it, try any of the other demos that don't require it instead.
 
 cam = 0
-for file in glob.glob("/dev/video*"):
-    m = re.search("/dev/video(.+?)", file)
-    if m:
-        cam = m.group(1)
-        break
+# for file in glob.glob("/dev/video*"):
+#     m = re.search("/dev/video(.+?)", file)
+#     if m:
+#         cam = m.group(1)
+#         break
 
 # Get a reference to webcam #0 (the default one)
 cap = cv2.VideoCapture(cam)
@@ -52,6 +52,9 @@ while True:
 
     # Display the resulting image
     cv2.imshow("Video", frame)
+
+    cv2.namedWindow("Video", cv2.WINDOW_NORMAL)
+    cv2.setWindowProperty("Video", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
 
     # Hit 'q' on the keyboard to quit!
     if cv2.waitKey(1) & 0xFF == ord("q"):

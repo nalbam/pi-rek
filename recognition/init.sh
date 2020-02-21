@@ -3,12 +3,12 @@
 sudo apt update
 sudo apt upgrade -y
 
-sudo pip3 install cmake
-sudo pip3 install face_recognition
-sudo pip3 install imutils
-sudo pip3 install opencv-python
-sudo pip3 install opencv-python-headless
-sudo pip3 install opencv-contrib-python
+pip3 install cmake
+pip3 install face_recognition
+pip3 install imutils
+pip3 install opencv-python==3.4.6.27
+# pip3 install opencv-python-headless
+# pip3 install opencv-contrib-python
 
 sudo apt install -y libhdf5-dev libatlas-base-dev libjasper-dev libqtgui4 libqt4-test
 

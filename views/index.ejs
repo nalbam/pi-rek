@@ -33,6 +33,7 @@
                 url: 'qr.json?_t=' + (Math.random() * 100000),
                 type: 'get',
                 success: function (data, status) {
+                    console.log(`qr txt ${data}`)
                     if (data) {
                         $('#qr').text(data);
                     } else {
@@ -57,6 +58,8 @@
     <p id="qr">-</p>
 
     <script>
+        console.log(`start`)
+
         // startStream();
 
         setInterval(function () {

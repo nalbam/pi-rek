@@ -13,6 +13,7 @@
         });
         socket.on('QR', function (url) {
             $.get(url, function (data) {
+                console.log(data)
                 if (data) {
                     $('#qr').text(data);
                 } else {

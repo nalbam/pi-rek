@@ -1,7 +1,9 @@
 const os = require('os'),
     ip = require('ip'),
     fs = require('fs'),
-    express = require('express');
+    express = require('express'),
+    PiCamera = require('pi-camera'),
+    zbarimg = require('node-zbarimg');
 
 const exec = require('child_process').exec;
 const cron = require('cron').CronJob;
@@ -22,6 +24,14 @@ app.use(express.static('static'));
 app.get('/', function (req, res) {
     let host = os.hostname();
     res.render('index.ejs', { host: host, port: port, server: ip.address() });
+});
+
+const myCamera = new PiCamera({
+    mode: 'photo',
+    output: `${__dirname}/static/snap.jpg`,
+    width: 640,
+    height: 480,
+    nopreview: true,
 });
 
 io.on('connection', function (socket) {
@@ -70,14 +80,23 @@ function startStreaming(io) {
 }
 
 function scanJob() {
-    const scan = exec(`${scan_shell}`);
+    // const scan = exec(`${scan_shell}`);
 
-    scan.stdout.on('data', data => {
-        console.log(`scanned.`);
-    });
+    // scan.stdout.on('data', data => {
+    //     console.log(`scanned.`);
+    // });
 
-    scan.stderr.on('data', data => {
-        console.error(`failure.`);
+    // scan.stderr.on('data', data => {
+    //     console.error(`failure.`);
+    // });
+
+    myCamera.snap().then((result) => {
+        // Your picture was captured
+        zbarimg('static/snap.jpg', function (err, code) {
+            console.log(code)
+        })
+    }).catch((error) => {
+        console.error(`failure. ${error}`);
     });
 }
 

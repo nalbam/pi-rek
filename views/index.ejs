@@ -11,7 +11,7 @@
         socket.on('liveStream', function (url) {
             $('#image').attr('src', url);
         });
-        socket.on('QR', function (url) {
+        socket.on('detected', function (url) {
             console.log(`qr url ${data}`)
             $.get(url, function (data) {
                 console.log(`qr txt ${data}`)

@@ -35,7 +35,7 @@ io.on('connection', function (socket) {
         // no more sockets
         if (Object.keys(sockets).length == 0) {
             app.set('watchingFile', false);
-            fs.unwatchFile('./static/qr.jpg');
+            fs.unwatchFile('./static/image.jpg');
             fs.unwatchFile('./static/qr.json');
         }
     });
@@ -53,7 +53,7 @@ http.listen(port, function () {
 function startStreaming(io) {
     if (app.get('watchingFile')) {
         io.sockets.emit('liveStream', 'image.jpg?_t=' + (Math.random() * 100000));
-        io.sockets.emit('QR', 'qr.json?_t=' + (Math.random() * 100000));
+        io.sockets.emit('detected', 'qr.json?_t=' + (Math.random() * 100000));
         return;
     }
 
@@ -65,7 +65,7 @@ function startStreaming(io) {
         io.sockets.emit('liveStream', 'image.jpg?_t=' + (Math.random() * 100000));
     });
     fs.watchFile('./static/qr.json', function () {
-        io.sockets.emit('QR', 'qr.json?_t=' + (Math.random() * 100000));
+        io.sockets.emit('detected', 'qr.json?_t=' + (Math.random() * 100000));
     });
 }
 

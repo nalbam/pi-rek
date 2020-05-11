@@ -82,7 +82,7 @@ function scanJob() {
 }
 
 const job = new cron({
-    cronTime: '* * * * * *',
+    cronTime: '*/3 * * * * *',
     onTick: function () {
         scanJob();
     },

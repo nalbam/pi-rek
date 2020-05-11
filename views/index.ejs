@@ -8,12 +8,20 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
         var socket = io();
-        socket.on('liveStream', function (url) {
-            $('#image').attr('src', url);
+        socket.on('liveStream', function () {
+            $('#image').attr('src', 'image.jpg?_t=' + (Math.random() * 100000));
+            $.get('qr.json?_t=' + (Math.random() * 100000), function (data) {
+                console.log(`qr txt ${data}`)
+                if (data) {
+                    $('#qr').text(data);
+                } else {
+                    $('#qr').text('');
+                }
+            });
         });
         socket.on('detected', function (url) {
             console.log(`qr url ${data}`)
-            $.get(url, function (data) {
+            $.get('qr.json?_t=' + (Math.random() * 100000), function (data) {
                 console.log(`qr txt ${data}`)
                 if (data) {
                     $('#qr').text(data);

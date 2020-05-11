@@ -13,8 +13,8 @@
         });
         socket.on('QR', function (url) {
             $.getJSON(url, function (data) {
-                if (data.id) {
-                    $('#qr').text(data.id);
+                if (data) {
+                    $('#qr').text(data);
                 } else {
                     $('#qr').text('');
                 }

@@ -19,7 +19,7 @@ ZBAR=$(zbarimg ${IMAGE} 2>&1 | grep 'QR-Code')
 if [ ! -z ${ZBAR} ]; then
     DETC="${ZBAR:8}"
 else
-    DETC="{}"
+    DETC=""
 fi
 
 if [ "${PREV}" != "${DETC}" ]; then

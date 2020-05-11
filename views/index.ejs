@@ -31,6 +31,7 @@
             // });
             $.ajax({
                 url: 'qr.json?_t=' + (Math.random() * 100000),
+                dataType: 'text',
                 type: 'get',
                 success: function (data, status) {
                     console.log(`qr txt ${data}`)

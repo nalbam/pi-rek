@@ -21,20 +21,12 @@
         }
 
         function loadText() {
-            // $.get('qr.json?_t=' + (Math.random() * 100000), function (data) {
-            //     console.log(`qr txt ${data}`)
-            //     if (data) {
-            //         $('#qr').text(data);
-            //     } else {
-            //         $('#qr').text('');
-            //     }
-            // });
             $.ajax({
                 url: 'qr.json?_t=' + (Math.random() * 100000),
                 dataType: 'text',
                 type: 'get',
                 success: function (data, status) {
-                    console.log(`qr txt ${data}`)
+                    // console.log(`qr txt ${data}`)
                     if (data) {
                         $('#qr').text(data);
                     } else {

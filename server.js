@@ -4,12 +4,10 @@ const os = require('os'),
     express = require('express'),
     zbarimg = require('node-zbarimg');
 
-// const exec = require('child_process').exec;
 const cron = require('cron').CronJob;
 const PiCamera = require('pi-camera');
 
 const port = process.env.PORT || '3000';
-const scan_shell = process.env.SCAN_SHELL || '';
 
 const app = express();
 const http = require('http').Server(app);
@@ -45,8 +43,7 @@ io.on('connection', function (socket) {
         // no more sockets
         if (Object.keys(sockets).length == 0) {
             app.set('watchingFile', false);
-            fs.unwatchFile('./static/image.jpg');
-            fs.unwatchFile('./static/qr.json');
+            fs.unwatchFile('./static/snap.jpg');
         }
     });
 
@@ -62,8 +59,7 @@ http.listen(port, function () {
 
 function startStreaming(io) {
     if (app.get('watchingFile')) {
-        io.sockets.emit('liveStream', 'image.jpg?_t=' + (Math.random() * 100000));
-        // io.sockets.emit('detected', 'qr.json?_t=' + (Math.random() * 100000));
+        io.sockets.emit('liveStream', 'snap.jpg?_t=' + (Math.random() * 100000));
         return;
     }
 
@@ -71,27 +67,13 @@ function startStreaming(io) {
 
     app.set('watchingFile', true);
 
-    fs.watchFile('./static/image.jpg', function () {
-        io.sockets.emit('liveStream', 'image.jpg?_t=' + (Math.random() * 100000));
+    fs.watchFile('./static/snap.jpg', function () {
+        io.sockets.emit('liveStream', 'snap.jpg?_t=' + (Math.random() * 100000));
     });
-    // fs.watchFile('./static/qr.json', function () {
-    //     io.sockets.emit('detected', 'qr.json?_t=' + (Math.random() * 100000));
-    // });
 }
 
 function scanJob() {
-    // const scan = exec(`${scan_shell}`);
-
-    // scan.stdout.on('data', data => {
-    //     console.log(`scanned.`);
-    // });
-
-    // scan.stderr.on('data', data => {
-    //     console.error(`failure.`);
-    // });
-
     myCamera.snap().then((result) => {
-        // Your picture was captured
         zbarimg('static/snap.jpg', function (err, code) {
             console.log(code);
             io.sockets.emit('detected', code);
@@ -110,6 +92,4 @@ const job = new cron({
     timeZone: 'Asia/Seoul'
 });
 
-if (scan_shell) {
-    job.start();
-}
+job.start();

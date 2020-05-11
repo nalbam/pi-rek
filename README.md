@@ -3,6 +3,8 @@
 ## npm install
 
 ```bash
+sudo apt-get install zbar-tools
+
 npm install cron ejs express ip request socket.io
 ```
 

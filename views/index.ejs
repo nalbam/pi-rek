@@ -12,8 +12,9 @@
             $('#image').attr('src', url);
         });
         socket.on('QR', function (url) {
+            console.log(`qr url ${data}`)
             $.get(url, function (data) {
-                console.log(data)
+                console.log(`qr txt ${data}`)
                 if (data) {
                     $('#qr').text(data);
                 } else {
